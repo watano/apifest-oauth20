@@ -27,6 +27,8 @@ import java.util.Map;
 import org.bson.types.ObjectId;
 import org.junit.Test;
 
+import com.apifest.oauth20.vo.AuthCode;
+
 /**
  * @author Rossitsa Borissova
  */

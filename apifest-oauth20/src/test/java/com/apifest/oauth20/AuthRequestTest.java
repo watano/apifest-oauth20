@@ -28,6 +28,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 
+import com.apifest.oauth20.vo.AuthRequest;
+
 /**
  * @author Rossitsa Borissova
  */

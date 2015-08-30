@@ -23,6 +23,9 @@ import java.util.HashMap;
 
 import org.junit.Test;
 
+import com.apifest.oauth20.vo.ApplicationInfo;
+import com.apifest.oauth20.vo.ClientCredentials;
+
 /**
  *
  * @author Rossitsa Borissova

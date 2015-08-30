@@ -17,13 +17,14 @@
 /**
  * @author Apostol Terziev
  */
-package com.apifest.oauth20;
+package com.apifest.oauth20.persistence;
 
+import com.apifest.oauth20.OAuthServer;
 import com.apifest.oauth20.persistence.hazelcast.HazelcastDBManager;
 
 public class DBManagerFactory {
 
-    protected static volatile DBManager dbManager;
+	public static volatile DBManager dbManager;
 
     public static final String REDIS_DB = "redis";
     public static final String MONGO_DB = "mongodb";

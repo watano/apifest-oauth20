@@ -35,6 +35,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 
+import com.apifest.oauth20.persistence.MongoDBManager;
+import com.apifest.oauth20.vo.ClientCredentials;
+import com.apifest.oauth20.vo.Scope;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;

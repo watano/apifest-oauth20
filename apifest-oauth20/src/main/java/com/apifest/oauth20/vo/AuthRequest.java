@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.apifest.oauth20;
+package com.apifest.oauth20.vo;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,6 +24,9 @@ import java.util.Map;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.handler.codec.http.QueryStringDecoder;
+
+import com.apifest.oauth20.OAuthException;
+import com.apifest.oauth20.Response;
 
 /**
  * Represents authorization code request.
@@ -100,7 +103,7 @@ public class AuthRequest {
         }
     }
 
-    protected static boolean isValidURI(String uri) {
+    public static boolean isValidURI(String uri) {
         try {
             new URL(uri);
             return true;

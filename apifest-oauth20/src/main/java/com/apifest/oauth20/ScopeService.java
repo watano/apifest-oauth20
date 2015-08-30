@@ -30,6 +30,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
+import com.apifest.oauth20.persistence.DBManager;
+import com.apifest.oauth20.persistence.DBManagerFactory;
+import com.apifest.oauth20.vo.ApplicationInfo;
+import com.apifest.oauth20.vo.ClientCredentials;
+import com.apifest.oauth20.vo.Scope;
+import com.apifest.oauth20.vo.TokenRequest;
 
 /**
  * Responsible for storing and loading OAuth20 scopes.

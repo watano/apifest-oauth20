@@ -17,10 +17,16 @@
 /**
  * @author Apostol Terziev
  */
-package com.apifest.oauth20;
+package com.apifest.oauth20.persistence;
 
 import java.util.List;
 import java.util.Map;
+
+import com.apifest.oauth20.vo.AccessToken;
+import com.apifest.oauth20.vo.ApplicationInfo;
+import com.apifest.oauth20.vo.AuthCode;
+import com.apifest.oauth20.vo.ClientCredentials;
+import com.apifest.oauth20.vo.Scope;
 
 public interface DBManager {
 

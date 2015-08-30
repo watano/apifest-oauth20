@@ -18,12 +18,12 @@ package com.apifest.oauth20.persistence.hazelcast;
 
 import java.util.Date;
 
-import com.apifest.oauth20.AccessToken;
-import com.apifest.oauth20.ApplicationInfo;
-import com.apifest.oauth20.AuthCode;
-import com.apifest.oauth20.ClientCredentials;
 import com.apifest.oauth20.JSONUtils;
-import com.apifest.oauth20.Scope;
+import com.apifest.oauth20.vo.AccessToken;
+import com.apifest.oauth20.vo.ApplicationInfo;
+import com.apifest.oauth20.vo.AuthCode;
+import com.apifest.oauth20.vo.ClientCredentials;
+import com.apifest.oauth20.vo.Scope;
 
 /**
  * Transforms objects from/to persistence type objects.

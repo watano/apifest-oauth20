@@ -26,6 +26,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.apifest.oauth20.vo.ClientCredentials;
+
 /**
  * @author Rossitsa Borissova
  */

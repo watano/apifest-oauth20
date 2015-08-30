@@ -44,6 +44,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.apifest.oauth20.api.ExceptionEventHandler;
 import com.apifest.oauth20.api.LifecycleHandler;
+import com.apifest.oauth20.persistence.DBManagerFactory;
+import com.apifest.oauth20.vo.AccessToken;
+import com.apifest.oauth20.vo.ApplicationInfo;
+import com.apifest.oauth20.vo.ClientCredentials;
+import com.apifest.oauth20.vo.QueryParameter;
 
 /**
  * Handler for requests received on the server.

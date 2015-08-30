@@ -25,6 +25,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.apifest.oauth20.vo.Scope;
+
 /**
  * @author Rossitsa Borissova
  */

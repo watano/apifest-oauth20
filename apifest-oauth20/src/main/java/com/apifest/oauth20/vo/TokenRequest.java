@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.apifest.oauth20;
+package com.apifest.oauth20.vo;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -26,6 +26,11 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.util.CharsetUtil;
+
+import com.apifest.oauth20.AuthorizationServer;
+import com.apifest.oauth20.OAuthException;
+import com.apifest.oauth20.OAuthServer;
+import com.apifest.oauth20.Response;
 
 /**
  * Represents token request.
@@ -39,13 +44,13 @@ public class TokenRequest {
     public static final String CLIENT_CREDENTIALS = "client_credentials";
     public static final String PASSWORD = "password";
 
-    protected static final String GRANT_TYPE = "grant_type";
-    protected static final String CODE = "code";
-    protected static final String REDIRECT_URI = "redirect_uri";
-    protected static final String CLIENT_ID = "client_id";
-    protected static final String CLIENT_SECRET = "client_secret";
-    protected static final String SCOPE = "scope";
-    protected static final String USERNAME = "username";
+    public static final String GRANT_TYPE = "grant_type";
+    public static final String CODE = "code";
+    public static final String REDIRECT_URI = "redirect_uri";
+    public static final String CLIENT_ID = "client_id";
+    public static final String CLIENT_SECRET = "client_secret";
+    public static final String SCOPE = "scope";
+    public static final String USERNAME = "username";
 
     private String grantType;
     private String code;
@@ -117,7 +122,7 @@ public class TokenRequest {
         }
     }
 
-    protected void checkMandatoryParams() throws OAuthException {
+    public void checkMandatoryParams() throws OAuthException {
         if (clientId == null || clientId.isEmpty()) {
             throw new OAuthException(String.format(Response.MANDATORY_PARAM_MISSING, CLIENT_ID),
                     HttpResponseStatus.BAD_REQUEST);

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.apifest.oauth20;
+package com.apifest.oauth20.vo;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.annotation.JSONType;
+import com.apifest.oauth20.JSONUtils;
 
 /**
  * Contains info about a client application.
@@ -37,8 +38,7 @@ import com.alibaba.fastjson.annotation.JSONType;
 @JSONType(orders = { "name", "description", "client_id", "client_secret", "scope", "registered", "redirect_uri", "status", "application_details" })
 //@JsonSerialize(include = Inclusion.NON_EMPTY)
 public class ApplicationInfo implements Serializable {
-
-    protected static Logger log = LoggerFactory.getLogger(ApplicationInfo.class);
+    public static Logger log = LoggerFactory.getLogger(ApplicationInfo.class);
 
     private static final long serialVersionUID = 6017283924235608024L;
 

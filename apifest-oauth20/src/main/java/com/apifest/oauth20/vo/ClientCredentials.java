@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.apifest.oauth20;
+package com.apifest.oauth20.vo;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -22,6 +22,8 @@ import java.util.Map;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.annotation.JSONType;
+import com.apifest.oauth20.JSONUtils;
+import com.apifest.oauth20.RandomGenerator;
 
 /**
  * Holds a client application information as it is stored in the DB.

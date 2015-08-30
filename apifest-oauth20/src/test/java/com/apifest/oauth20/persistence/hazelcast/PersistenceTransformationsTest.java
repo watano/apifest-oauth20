@@ -20,10 +20,10 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import com.apifest.oauth20.AccessToken;
-import com.apifest.oauth20.AuthCode;
-import com.apifest.oauth20.ClientCredentials;
-import com.apifest.oauth20.Scope;
+import com.apifest.oauth20.vo.AccessToken;
+import com.apifest.oauth20.vo.AuthCode;
+import com.apifest.oauth20.vo.ClientCredentials;
+import com.apifest.oauth20.vo.Scope;
 
 /**
 *

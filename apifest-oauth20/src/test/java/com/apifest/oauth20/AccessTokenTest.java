@@ -31,6 +31,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.alibaba.fastjson.JSON;
+import com.apifest.oauth20.vo.AccessToken;
 
 /**
  * @author Rossitsa Borissova

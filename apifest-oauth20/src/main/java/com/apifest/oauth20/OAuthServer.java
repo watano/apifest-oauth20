@@ -42,6 +42,7 @@ import org.slf4j.LoggerFactory;
 
 import com.apifest.oauth20.api.ICustomGrantTypeHandler;
 import com.apifest.oauth20.api.IUserAuthentication;
+import com.apifest.oauth20.persistence.DBManagerFactory;
 
 /**
  * Class responsible for ApiFest OAuth 2.0 Server.

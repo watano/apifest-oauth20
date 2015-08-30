@@ -50,6 +50,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 
+import com.apifest.oauth20.persistence.DBManagerFactory;
+import com.apifest.oauth20.vo.AccessToken;
+import com.apifest.oauth20.vo.ApplicationInfo;
+import com.apifest.oauth20.vo.ClientCredentials;
+
 /**
  * @author Rossitsa Borissova
  */

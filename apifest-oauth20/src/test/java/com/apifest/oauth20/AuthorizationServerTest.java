@@ -54,6 +54,13 @@ import org.junit.Test;
 import org.slf4j.Logger;
 
 import com.apifest.oauth20.api.UserDetails;
+import com.apifest.oauth20.persistence.DBManager;
+import com.apifest.oauth20.vo.AccessToken;
+import com.apifest.oauth20.vo.ApplicationInfo;
+import com.apifest.oauth20.vo.AuthCode;
+import com.apifest.oauth20.vo.ClientCredentials;
+import com.apifest.oauth20.vo.Scope;
+import com.apifest.oauth20.vo.TokenRequest;
 
 /**
  * @author Rossitsa Borissova

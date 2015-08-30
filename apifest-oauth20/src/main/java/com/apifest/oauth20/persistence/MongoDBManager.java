@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.apifest.oauth20;
+package com.apifest.oauth20.persistence;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +27,11 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.apifest.oauth20.vo.AccessToken;
+import com.apifest.oauth20.vo.ApplicationInfo;
+import com.apifest.oauth20.vo.AuthCode;
+import com.apifest.oauth20.vo.ClientCredentials;
+import com.apifest.oauth20.vo.Scope;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -43,28 +48,28 @@ import com.mongodb.WriteResult;
 public class MongoDBManager implements DBManager {
 
     protected static MongoClient mongoClient;
-    protected static DB db;
+    public static DB db;
 
-    protected static Logger log = LoggerFactory.getLogger(DBManager.class);
+    public static Logger log = LoggerFactory.getLogger(DBManager.class);
 
-    protected static final String CLIENTS_COLLECTION_NAME = "clients";
-    protected static final String ID_NAME = "_id";
-    protected static final String CLIENTS_ID_NAME = "clientId";
+    public static final String CLIENTS_COLLECTION_NAME = "clients";
+    public static final String ID_NAME = "_id";
+    public static final String CLIENTS_ID_NAME = "clientId";
 
-    protected static final String AUTH_CODE_COLLECTION_NAME = "authCodes";
-    protected static final String AUTH_CODE_ID_NAME = "code";
+    public static final String AUTH_CODE_COLLECTION_NAME = "authCodes";
+    public static final String AUTH_CODE_ID_NAME = "code";
 
-    protected static final String ACCESS_TOKEN_COLLECTION_NAME = "accessTokens";
-    protected static final String ACCESS_TOKEN_ID_NAME = "token";
+    public static final String ACCESS_TOKEN_COLLECTION_NAME = "accessTokens";
+    public static final String ACCESS_TOKEN_ID_NAME = "token";
 
-    protected static final String REFRESH_TOKEN_ID_NAME = "refreshToken";
-    protected static final String VALID_NAME = "valid";
-    protected static final String REDIRECT_URI_NAME = "redirectUri";
+    public static final String REFRESH_TOKEN_ID_NAME = "refreshToken";
+    public static final String VALID_NAME = "valid";
+    public static final String REDIRECT_URI_NAME = "redirectUri";
 
-    protected static final String SCOPE_COLLECTION_NAME = "scopes";
-    protected static final String SCOPE_ID_NAME = "name";
+    public static final String SCOPE_COLLECTION_NAME = "scopes";
+    public static final String SCOPE_ID_NAME = "name";
 
-    protected static final String USER_ID = "userId";
+    public static final String USER_ID = "userId";
 
     public MongoDBManager() {
         db = MongoUtil.getDB();
@@ -314,7 +319,7 @@ public class MongoDBManager implements DBManager {
     }
 
     @SuppressWarnings("unchecked")
-    protected void storeObject(Object object, String collectionName) throws IOException {
+    public void storeObject(Object object, String collectionName) throws IOException {
         String json = constructDbId(object);
         // use ObjectMapper in order to represent expiresIn as integer not as double - 100 instead of 100.00
         Map<String, Object> result = JSON.parseObject(json, Map.class);
@@ -326,7 +331,7 @@ public class MongoDBManager implements DBManager {
     }
 
     // replaces id with _id, if id presents in the object
-    protected String constructDbId(Object object) {
+    public String constructDbId(Object object) {
         String json = JSON.toJSONString(object);
         JSONObject jsonObj= JSON.parseObject(json);
         if(jsonObj.containsKey("id")) {
@@ -337,13 +342,13 @@ public class MongoDBManager implements DBManager {
         return jsonObj.toString();
     }
 
-    protected Object findObjectById(String id, String idName, String collectionName) {
+    public Object findObjectById(String id, String idName, String collectionName) {
         DBCollection coll = db.getCollection(collectionName);
         BasicDBObject query = new BasicDBObject(idName, id);
         return getObject(coll, query);
     }
 
-    protected Object getObject(DBCollection coll, BasicDBObject query) {
+    public Object getObject(DBCollection coll, BasicDBObject query) {
         DBCursor cursor = coll.find(query);
         Object result = null;
         try {

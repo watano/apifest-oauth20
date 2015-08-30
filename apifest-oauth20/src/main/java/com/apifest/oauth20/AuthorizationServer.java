@@ -34,6 +34,14 @@ import com.apifest.oauth20.api.AuthenticationException;
 import com.apifest.oauth20.api.ICustomGrantTypeHandler;
 import com.apifest.oauth20.api.IUserAuthentication;
 import com.apifest.oauth20.api.UserDetails;
+import com.apifest.oauth20.persistence.DBManager;
+import com.apifest.oauth20.persistence.DBManagerFactory;
+import com.apifest.oauth20.vo.AccessToken;
+import com.apifest.oauth20.vo.ApplicationInfo;
+import com.apifest.oauth20.vo.AuthCode;
+import com.apifest.oauth20.vo.AuthRequest;
+import com.apifest.oauth20.vo.ClientCredentials;
+import com.apifest.oauth20.vo.TokenRequest;
 
 /**
  * Main class for authorization.

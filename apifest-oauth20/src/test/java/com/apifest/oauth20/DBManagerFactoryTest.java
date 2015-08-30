@@ -22,6 +22,10 @@ import static org.mockito.Mockito.mock;
 import org.junit.Test;
 import org.slf4j.Logger;
 
+import com.apifest.oauth20.persistence.DBManager;
+import com.apifest.oauth20.persistence.DBManagerFactory;
+import com.apifest.oauth20.persistence.MongoDBManager;
+
 /**
  * @author Rossitsa Borissova
  */

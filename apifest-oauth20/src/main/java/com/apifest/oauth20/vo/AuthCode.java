@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package com.apifest.oauth20;
+package com.apifest.oauth20.vo;
 
 import java.util.Date;
 import java.util.Map;
 
 import org.bson.types.ObjectId;
+
+import com.apifest.oauth20.RandomGenerator;
 
 /**
  * Holds information about authorization code.

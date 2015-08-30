@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.apifest.oauth20;
+package com.apifest.oauth20.vo;
 
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -31,13 +31,13 @@ import com.alibaba.fastjson.annotation.JSONType;
 @JSONType(orders = { "scope", "description", "cc_expires_in", "pass_expires_in", "refresh_expires_in" })
 public class Scope {
 
-    static final String SCOPE_FIELD = "scope";
-    static final String DESCRIPTION_FIELD = "description";
-    static final String CC_EXPIRES_IN_FIELD = "ccExpiresIn";
-    static final String PASS_EXPIRES_IN_FIELD = "passExpiresIn";
-    static final String REFRESH_EXPIRES_IN_FIELD = "refreshExpiresIn";
+    public static final String SCOPE_FIELD = "scope";
+    public static final String DESCRIPTION_FIELD = "description";
+    public static final String CC_EXPIRES_IN_FIELD = "ccExpiresIn";
+    public static final String PASS_EXPIRES_IN_FIELD = "passExpiresIn";
+    public static final String REFRESH_EXPIRES_IN_FIELD = "refreshExpiresIn";
 
-    static final Pattern SCOPE_PATTERN = Pattern.compile("^(\\p{Alnum}+-?_?)+$");
+    public static final Pattern SCOPE_PATTERN = Pattern.compile("^(\\p{Alnum}+-?_?)+$");
 
     @JSONField(name = "scope")
     private String scope;
