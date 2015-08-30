@@ -22,10 +22,11 @@ import java.net.URL;
 import java.util.Date;
 import java.util.Map;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.alibaba.fastjson.annotation.JSONType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.annotation.JSONType;
 
 /**
  * Contains info about a client application.

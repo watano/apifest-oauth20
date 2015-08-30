@@ -15,9 +15,10 @@
  */
 package com.apifest.oauth20;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.mock;
-import static org.junit.Assert.*;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;

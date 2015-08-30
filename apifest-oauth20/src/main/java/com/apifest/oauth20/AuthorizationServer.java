@@ -16,7 +16,6 @@
 
 package com.apifest.oauth20;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Map;

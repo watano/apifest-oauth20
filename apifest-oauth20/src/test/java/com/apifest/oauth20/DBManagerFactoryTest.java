@@ -16,11 +16,11 @@
 
 package com.apifest.oauth20;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.junit.Assert.*;
 
-import org.slf4j.Logger;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 /**
  * @author Rossitsa Borissova

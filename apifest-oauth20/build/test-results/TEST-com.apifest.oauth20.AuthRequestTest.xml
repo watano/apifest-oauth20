@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.apifest.oauth20.AuthRequestTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2015-08-30T05:12:57" hostname="watano-PC" time="0.018">
+  <properties/>
+  <testcase name="given_request_initialize_fields" classname="com.apifest.oauth20.AuthRequestTest" time="0.002"/>
+  <testcase name="when_validate_and_redirect_uri_invalid_return_errror" classname="com.apifest.oauth20.AuthRequestTest" time="0.013"/>
+  <testcase name="when_uri_valid_return_true" classname="com.apifest.oauth20.AuthRequestTest" time="0.0"/>
+  <testcase name="when_validate_and_response_type_unsupported_return_errror" classname="com.apifest.oauth20.AuthRequestTest" time="0.001"/>
+  <testcase name="when_uri_not_valid_return_false" classname="com.apifest.oauth20.AuthRequestTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

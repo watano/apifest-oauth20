@@ -16,16 +16,20 @@
 
 package com.apifest.oauth20;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.BDDMockito.willThrow;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.jboss.netty.channel.Channel;
@@ -42,9 +46,9 @@ import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.jboss.netty.util.CharsetUtil;
-import org.slf4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 /**
  * @author Rossitsa Borissova

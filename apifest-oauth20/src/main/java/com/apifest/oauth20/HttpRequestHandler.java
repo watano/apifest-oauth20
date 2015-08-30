@@ -16,7 +16,6 @@
 
 package com.apifest.oauth20;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;

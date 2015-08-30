@@ -18,9 +18,10 @@ package com.apifest.oauth20;
 
 import java.util.Map;
 
-import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.alibaba.fastjson.JSON;
 
 /**
  * Utility class for JSON transformations.
@@ -41,7 +42,8 @@ public final class JSONUtils {
         return result;
     }
 
-    public static Map<String, String> convertStringToMap(String json) {
+    @SuppressWarnings("unchecked")
+	public static Map<String, String> convertStringToMap(String json) {
         Map<String, String> details = null;
         try {
             if (json != null) {

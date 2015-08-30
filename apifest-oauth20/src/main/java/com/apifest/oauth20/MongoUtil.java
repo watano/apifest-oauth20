@@ -23,8 +23,8 @@ import org.slf4j.LoggerFactory;
 
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
 import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoClientURI;
 
 /**
  * Utility class for Mongo DB.

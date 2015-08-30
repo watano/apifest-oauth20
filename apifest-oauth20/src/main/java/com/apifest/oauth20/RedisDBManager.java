@@ -37,7 +37,7 @@ public class RedisDBManager implements DBManager {
     private static Set<String> sentinels;
     private static JedisSentinelPool pool;
     private static String storeAuthCodeScript = "";
-    private static String storeAuthCodeSHA;
+    protected static String storeAuthCodeSHA;
 
     static {
         sentinels = new HashSet<String>();
@@ -51,7 +51,7 @@ public class RedisDBManager implements DBManager {
     public void setupDBManager() {
         Jedis jedis = pool.getResource();
         storeAuthCodeSHA = jedis.scriptLoad(storeAuthCodeScript);
-        pool.returnResource(jedis);
+        jedis.close();
     }
 
     /*
@@ -61,7 +61,7 @@ public class RedisDBManager implements DBManager {
     public boolean validClient(String clientId, String clientSecret) {
         Jedis jedis = pool.getResource();
         String secret = jedis.hget("cc:" + clientId, "secret");
-        pool.returnResource(jedis);
+        jedis.close();
         if (clientSecret.equals(secret) && String.valueOf(ClientCredentials.ACTIVE_STATUS).equals(jedis.hget("cc:" + clientId, "status"))) {
             return true;
         } else {
@@ -87,7 +87,7 @@ public class RedisDBManager implements DBManager {
         credentials.put("scope", String.valueOf(clientCreds.getScope()));
         credentials.put("details", JSONUtils.convertMapToJSON(clientCreds.getApplicationDetails()));
         jedis.hmset("cc:" + clientCreds.getId(), credentials);
-        pool.returnResource(jedis);
+        jedis.close();
     }
 
     /*
@@ -114,7 +114,7 @@ public class RedisDBManager implements DBManager {
         jedis.hset("acuri:" + authCode.getCode() + authCode.getRedirectUri(), "ac",
                 authCode.getCode());
         jedis.expire("acuri:" + authCode.getCode() + authCode.getRedirectUri(), 1800);
-        pool.returnResource(jedis);
+        jedis.close();
     }
 
     /*
@@ -124,7 +124,7 @@ public class RedisDBManager implements DBManager {
     public void updateAuthCodeValidStatus(String authCode, boolean valid) {
         Jedis jedis = pool.getResource();
         jedis.hset("acc:" + authCode, "valid", String.valueOf(valid));
-        pool.returnResource(jedis);
+        jedis.close();
     }
 
     /*
@@ -159,7 +159,7 @@ public class RedisDBManager implements DBManager {
         String key = accessToken.getUserId() + ":" + accessToken.getClientId() + ":" + uniqueId;
         jedis.hset(ACCESS_TOKEN_BY_USER_ID_PREFIX_NAME + key, "access_token", accessToken.getToken());
         jedis.expire(ACCESS_TOKEN_BY_USER_ID_PREFIX_NAME + key, Integer.valueOf(accessToken.getExpiresIn()));
-        pool.returnResource(jedis);
+        jedis.close();
     }
 
     /*
@@ -170,7 +170,7 @@ public class RedisDBManager implements DBManager {
         Jedis jedis = pool.getResource();
         String accessToken = jedis.hget("atr:" + refreshToken + clientId, "access_token");
         Map<String, String> accessTokenMap = jedis.hgetAll("at:" + accessToken);
-        pool.returnResource(jedis);
+        jedis.close();
         if (accessTokenMap.isEmpty()) {
             return null;
         }
@@ -184,7 +184,7 @@ public class RedisDBManager implements DBManager {
     public void updateAccessTokenValidStatus(String accessToken, boolean valid) {
         Jedis jedis = pool.getResource();
         jedis.hset("at:" + accessToken, "valid", String.valueOf(valid));
-        pool.returnResource(jedis);
+        jedis.close();
     }
 
     /*
@@ -194,7 +194,7 @@ public class RedisDBManager implements DBManager {
     public AccessToken findAccessToken(String accessToken) {
         Jedis jedis = pool.getResource();
         Map<String, String> accessTokenMap = jedis.hgetAll("at:" + accessToken);
-        pool.returnResource(jedis);
+        jedis.close();
         if (accessTokenMap.isEmpty() || "false".equals(accessTokenMap.get("valid"))) {
             return null;
         }
@@ -211,7 +211,7 @@ public class RedisDBManager implements DBManager {
         Map<String, String> authCodeIdMap = jedis.hgetAll("acuri:" + authCode + redirectUri);
         String authCodeId = authCodeIdMap.get("ac");
         Map<String, String> authCodeMap = jedis.hgetAll("acc:" + authCodeId);
-        pool.returnResource(jedis);
+        jedis.close();
         if (authCodeMap.isEmpty() || "false".equals(authCodeMap.get("valid"))) {
             return null;
         }
@@ -225,7 +225,7 @@ public class RedisDBManager implements DBManager {
     public ClientCredentials findClientCredentials(String clientId) {
         Jedis jedis = pool.getResource();
         Map<String, String> clientCredentialsMap = jedis.hgetAll("cc:" + clientId);
-        pool.returnResource(jedis);
+        jedis.close();
         if (clientCredentialsMap.isEmpty()) {
             return null;
         }
@@ -264,7 +264,7 @@ public class RedisDBManager implements DBManager {
                 list.add(Scope.loadFromStringMap(scopeMap));
             }
         }
-        pool.returnResource(jedis);
+        jedis.close();
         return list;
     }
 
@@ -275,7 +275,7 @@ public class RedisDBManager implements DBManager {
     public Scope findScope(String scopeName) {
         Jedis jedis = pool.getResource();
         Map<String, String> scopeMap = jedis.hgetAll("sc:" + scopeName);
-        pool.returnResource(jedis);
+        jedis.close();
         if (scopeMap.isEmpty()) {
             return null;
         }
@@ -322,7 +322,7 @@ public class RedisDBManager implements DBManager {
                 list.add(creds);
             }
         }
-        pool.returnResource(jedis);
+        jedis.close();
         return list;
     }
 
@@ -333,7 +333,7 @@ public class RedisDBManager implements DBManager {
     public boolean deleteScope(String scopeName) {
         Jedis jedis = pool.getResource();
         Long deleted = jedis.del("sc:" + scopeName);
-        pool.returnResource(jedis);
+        jedis.close();
         // 1 if deleted, 0 - nothing deleted
         return (deleted.intValue() == 1) ? true : false;
     }
@@ -353,7 +353,7 @@ public class RedisDBManager implements DBManager {
                 accessTokens.add(AccessToken.loadFromStringMap(accessTokenMap));
             }
         }
-        pool.returnResource(jedis);
+        jedis.close();
         return accessTokens;
     }
 
@@ -362,7 +362,7 @@ public class RedisDBManager implements DBManager {
         Jedis jedis = pool.getResource();
         jedis.expire(ACCESS_TOKEN_PREFIX_NAME + accessToken, 0);
         // refresh token will be associated with the new access token issued
-        pool.returnResource(jedis);
+        jedis.close();
     }
 
 }

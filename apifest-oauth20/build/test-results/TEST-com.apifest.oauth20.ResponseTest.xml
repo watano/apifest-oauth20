@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.apifest.oauth20.ResponseTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2015-08-30T05:12:57" hostname="watano-PC" time="0.019">
+  <properties/>
+  <testcase name="when_create_ok_response_with_message_set_headers" classname="com.apifest.oauth20.ResponseTest" time="0.002"/>
+  <testcase name="when_create_response_with_message_set_content_type" classname="com.apifest.oauth20.ResponseTest" time="0.0"/>
+  <testcase name="when_create_bad_request_response_set_headers" classname="com.apifest.oauth20.ResponseTest" time="0.0"/>
+  <testcase name="when_create_bad_request_response_with_message_set_headers" classname="com.apifest.oauth20.ResponseTest" time="0.0"/>
+  <testcase name="when_get_exception_response_get_exception_HTTP_status" classname="com.apifest.oauth20.ResponseTest" time="0.015"/>
+  <testcase name="when_create_not_found_response_set_headers" classname="com.apifest.oauth20.ResponseTest" time="0.0"/>
+  <testcase name="when_create_unauthorized_response_set_headers" classname="com.apifest.oauth20.ResponseTest" time="0.0"/>
+  <testcase name="when_get_not_found_response_return_response_with_404_status" classname="com.apifest.oauth20.ResponseTest" time="0.0"/>
+  <testcase name="when_no_message_in_response_set_content_length_zero" classname="com.apifest.oauth20.ResponseTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

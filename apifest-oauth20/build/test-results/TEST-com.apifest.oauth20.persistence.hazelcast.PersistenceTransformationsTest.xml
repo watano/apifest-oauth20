@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.apifest.oauth20.persistence.hazelcast.PersistenceTransformationsTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2015-08-30T05:12:57" hostname="watano-PC" time="0.001">
+  <properties/>
+  <testcase name="when_no_scope_found_return_null" classname="com.apifest.oauth20.persistence.hazelcast.PersistenceTransformationsTest" time="0.001"/>
+  <testcase name="when_no_client_credentials_found_return_null" classname="com.apifest.oauth20.persistence.hazelcast.PersistenceTransformationsTest" time="0.0"/>
+  <testcase name="when_no_access_token_found_return_null" classname="com.apifest.oauth20.persistence.hazelcast.PersistenceTransformationsTest" time="0.0"/>
+  <testcase name="when_no_auth_code_found_return_null" classname="com.apifest.oauth20.persistence.hazelcast.PersistenceTransformationsTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

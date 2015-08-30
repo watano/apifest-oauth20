@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.apifest.oauth20.TokenRequestTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2015-08-30T05:12:57" hostname="watano-PC" time="0.013">
+  <properties/>
+  <testcase name="when_redirect_uri_is_missing_throws_exception" classname="com.apifest.oauth20.TokenRequestTest" time="0.0"/>
+  <testcase name="when_auth_code_is_missing_throws_exception" classname="com.apifest.oauth20.TokenRequestTest" time="0.001"/>
+  <testcase name="when_grant_type_password_and_no_password_return_error" classname="com.apifest.oauth20.TokenRequestTest" time="0.001"/>
+  <testcase name="when_client_credentials_not_in_request_body_and_invalid_Authorization_header_then_client_credentials_are_null" classname="com.apifest.oauth20.TokenRequestTest" time="0.001"/>
+  <testcase name="when_grant_type_is_missing_throws_exception" classname="com.apifest.oauth20.TokenRequestTest" time="0.001"/>
+  <testcase name="when_grant_type_refresh_token_and_no_refresh_token_return_error" classname="com.apifest.oauth20.TokenRequestTest" time="0.001"/>
+  <testcase name="when_client_credentials_not_in_request_body_and_no_Authorization_header_then_client_credentials_are_null" classname="com.apifest.oauth20.TokenRequestTest" time="0.001"/>
+  <testcase name="when_all_mandatory_params_present_do_not_throw_exception" classname="com.apifest.oauth20.TokenRequestTest" time="0.001"/>
+  <testcase name="when_grant_type_not_supported_throws_exception" classname="com.apifest.oauth20.TokenRequestTest" time="0.001"/>
+  <testcase name="when_grantType_empty_check_mandatory_params_throws_exception" classname="com.apifest.oauth20.TokenRequestTest" time="0.002"/>
+  <testcase name="when_grant_type_password_and_no_username_return_error" classname="com.apifest.oauth20.TokenRequestTest" time="0.001"/>
+  <testcase name="when_clientId_empty_check_mandatory_params_throws_exception" classname="com.apifest.oauth20.TokenRequestTest" time="0.001"/>
+  <testcase name="when_client_credentials_not_in_request_body_then_extract_them_from_Authorization_header" classname="com.apifest.oauth20.TokenRequestTest" time="0.0"/>
+  <testcase name="when_client_id_is_missing_throws_exception" classname="com.apifest.oauth20.TokenRequestTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

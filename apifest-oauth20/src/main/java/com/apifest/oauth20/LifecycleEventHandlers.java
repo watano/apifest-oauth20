@@ -31,8 +31,8 @@ import org.slf4j.LoggerFactory;
 import com.apifest.oauth20.api.ExceptionEventHandler;
 import com.apifest.oauth20.api.LifecycleHandler;
 import com.apifest.oauth20.api.OnException;
-import com.apifest.oauth20.api.OnResponse;
 import com.apifest.oauth20.api.OnRequest;
+import com.apifest.oauth20.api.OnResponse;
 
 /**
  * Loads lifecycle event handlers on OAuth server startup.
@@ -52,41 +52,47 @@ public class LifecycleEventHandlers {
         try {
             if (classLoader != null) {
                 JarFile jarFile = new JarFile(customJar);
-                Enumeration<JarEntry> entries = jarFile.entries();
-                while (entries.hasMoreElements()) {
-                    JarEntry entry = entries.nextElement();
-                    if (entry.isDirectory() || !entry.getName().endsWith(".class")) {
-                        continue;
-                    }
-                    // remove .class
-                    String className = entry.getName().substring(0, entry.getName().length() - 6);
-                    className = className.replace('/', '.');
-                    try {
-                        // REVISIT: check for better solution
-                        if (className.startsWith("org.jboss.netty") || className.startsWith("org.apache.log4j")
-                                || className.startsWith("org.apache.commons")) {
-                            continue;
-                        }
-                        Class<?> clazz = classLoader.loadClass(className);
-                        if (clazz.isAnnotationPresent(OnRequest.class)
-                                && LifecycleHandler.class.isAssignableFrom(clazz)) {
-                            requestEventHandlers.add((Class<LifecycleHandler>) clazz);
-                            log.debug("preIssueTokenHandler added {}", className);
-                        }
-                        if (clazz.isAnnotationPresent(OnResponse.class)
-                                && LifecycleHandler.class.isAssignableFrom(clazz)) {
-                            responseEventHandlers.add((Class<LifecycleHandler>) clazz);
-                            log.debug("postIssueTokenHandler added {}", className);
-                        }
-                        if (clazz.isAnnotationPresent(OnException.class)
-                                && ExceptionEventHandler.class.isAssignableFrom(clazz)) {
-                            exceptionHandlers.add((Class<ExceptionEventHandler>) clazz);
-                            log.debug("exceptionHandlers added {}", className);
-                        }
-                    } catch (ClassNotFoundException e1) {
-                        // continue
-                    }
-                }
+                try {
+					Enumeration<JarEntry> entries = jarFile.entries();
+					while (entries.hasMoreElements()) {
+					    JarEntry entry = entries.nextElement();
+					    if (entry.isDirectory() || !entry.getName().endsWith(".class")) {
+					        continue;
+					    }
+					    // remove .class
+					    String className = entry.getName().substring(0, entry.getName().length() - 6);
+					    className = className.replace('/', '.');
+					    try {
+					        // REVISIT: check for better solution
+					        if (className.startsWith("org.jboss.netty") || className.startsWith("org.apache.log4j")
+					                || className.startsWith("org.apache.commons")) {
+					            continue;
+					        }
+					        Class<?> clazz = classLoader.loadClass(className);
+					        if (clazz.isAnnotationPresent(OnRequest.class)
+					                && LifecycleHandler.class.isAssignableFrom(clazz)) {
+					            requestEventHandlers.add((Class<LifecycleHandler>) clazz);
+					            log.debug("preIssueTokenHandler added {}", className);
+					        }
+					        if (clazz.isAnnotationPresent(OnResponse.class)
+					                && LifecycleHandler.class.isAssignableFrom(clazz)) {
+					            responseEventHandlers.add((Class<LifecycleHandler>) clazz);
+					            log.debug("postIssueTokenHandler added {}", className);
+					        }
+					        if (clazz.isAnnotationPresent(OnException.class)
+					                && ExceptionEventHandler.class.isAssignableFrom(clazz)) {
+					            exceptionHandlers.add((Class<ExceptionEventHandler>) clazz);
+					            log.debug("exceptionHandlers added {}", className);
+					        }
+					    } catch (ClassNotFoundException e1) {
+					        // continue
+					    }
+					}
+				} catch (Exception e) {
+					log.error(e.getMessage(), e);
+				}finally {
+					jarFile.close();
+				}
             }
         } catch (MalformedURLException e) {
             log.error("cannot load lifecycle handlers", e);
