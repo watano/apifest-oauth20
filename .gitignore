@@ -10,4 +10,5 @@ target/*
 *.log
 /.gradle/*
 /apifest-oauth20/bin/*
+/apifest-oauth20/build/*
 /target
