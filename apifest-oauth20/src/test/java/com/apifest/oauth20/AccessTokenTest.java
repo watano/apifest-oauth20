@@ -16,20 +16,18 @@
 
 package com.apifest.oauth20;
 
+import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.spy;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Test;
+
 import com.alibaba.fastjson.JSON;
-import org.testng.annotations.Test;
 
 /**
  * @author Rossitsa Borissova

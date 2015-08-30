@@ -19,7 +19,7 @@ package com.apifest.oauth20;
 import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,8 +35,8 @@ import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.jboss.netty.util.CharsetUtil;
 import org.slf4j.Logger;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Rossitsa Borissova
@@ -45,7 +45,7 @@ public class ScopeServiceTest {
 
     ScopeService service;
 
-    @BeforeMethod
+    @Before
     public void setup() {
         ScopeService.log = mock(Logger.class);
         service = spy(new ScopeService());

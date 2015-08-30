@@ -22,7 +22,7 @@ import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,8 +43,8 @@ import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.jboss.netty.util.CharsetUtil;
 import org.slf4j.Logger;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Rossitsa Borissova
@@ -54,7 +54,7 @@ public class HttpRequestHandlerTest {
     HttpRequestHandler handler;
     Channel channel;
 
-    @BeforeMethod
+    @Before
     public void setup() {
         OAuthServer.log = mock(Logger.class);
         String path = getClass().getClassLoader().getResource("apifest-oauth-test.properties").getPath();

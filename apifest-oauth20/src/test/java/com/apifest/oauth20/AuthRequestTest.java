@@ -19,21 +19,19 @@ package com.apifest.oauth20;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.slf4j.Logger;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Rossitsa Borissova
  */
 public class AuthRequestTest {
 
-    @BeforeMethod
+    @Before
     public void setup() {
         OAuthException.log = mock(Logger.class);
     }

@@ -18,7 +18,7 @@ package com.apifest.oauth20;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
@@ -27,8 +27,8 @@ import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.util.CharsetUtil;
 import org.slf4j.Logger;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 
 /**
@@ -41,7 +41,7 @@ public class TokenRequestTest {
     String clientId = "203598599234220";
     String clientSecret = "105ef93e7bb386da3a23c32e8563434fad005fd0a6a88315fcdf946aa761c838";
 
-    @BeforeMethod
+    @Before
     public void setup() {
         req = mock(HttpRequest.class);
         OAuthException.log = mock(Logger.class);

@@ -18,12 +18,12 @@ package com.apifest.oauth20;
 
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * @author Rossitsa Borissova

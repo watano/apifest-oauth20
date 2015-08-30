@@ -16,7 +16,6 @@
 
 package com.apifest.oauth20;
 
-import java.io.IOException;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;

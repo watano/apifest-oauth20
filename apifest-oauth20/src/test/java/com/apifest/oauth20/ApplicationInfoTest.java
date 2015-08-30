@@ -16,11 +16,11 @@
 
 package com.apifest.oauth20;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 import java.util.HashMap;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  *

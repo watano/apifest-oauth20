@@ -19,15 +19,15 @@ package com.apifest.oauth20;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.BDDMockito.*;
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.bson.BSONObject;
 import org.slf4j.Logger;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -44,7 +44,7 @@ public class MongoDBManagerTest {
     DB db;
     DBCollection coll;
 
-    @BeforeMethod
+    @Before
     public void setup() {
         OAuthServer.log = mock(Logger.class);
         String path = getClass().getClassLoader().getResource("apifest-oauth-test.properties").getPath();

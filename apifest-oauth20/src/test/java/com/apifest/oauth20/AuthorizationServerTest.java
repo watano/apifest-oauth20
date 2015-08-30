@@ -32,15 +32,15 @@ import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.jboss.netty.util.CharsetUtil;
 import org.slf4j.Logger;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.apifest.oauth20.api.UserDetails;
 
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.BDDMockito.*;
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  * @author Rossitsa Borissova
@@ -52,7 +52,7 @@ public class AuthorizationServerTest {
     String clientSecret = "105ef93e7bb386da3a23c32e8563434fad005fd0a6a88315fcdf946aa761c838";
 
 
-    @BeforeMethod
+    @Before
     public void setup() {
         OAuthServer.log = mock(Logger.class);
         String path = getClass().getClassLoader().getResource("apifest-oauth-test.properties").getPath();
@@ -901,7 +901,7 @@ public class AuthorizationServerTest {
         assertNull(result);
     }
 
-    @Test(expectedExceptions = OAuthException.class)
+    @Test(expected = OAuthException.class)
     public void when_revoke_token_with_client_id_null_will_throw_exception() throws Exception {
         // GIVEN
         HttpRequest req = mock(HttpRequest.class);

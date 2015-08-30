@@ -19,12 +19,12 @@ package com.apifest.oauth20;
 import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.testng.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * @author Rossitsa Borissova

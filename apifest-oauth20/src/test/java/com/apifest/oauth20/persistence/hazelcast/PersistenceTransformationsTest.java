@@ -16,9 +16,9 @@
 
 package com.apifest.oauth20.persistence.hazelcast;
 
-import static org.testng.Assert.assertNull;
+import static org.junit.Assert.*;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import com.apifest.oauth20.AccessToken;
 import com.apifest.oauth20.AuthCode;
