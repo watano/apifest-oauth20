@@ -8,5 +8,6 @@ target/*
 */target/*
 */test-output/*
 *.log
-
+/.gradle/*
+/apifest-oauth20/bin/*
 /target

@@ -26,9 +26,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelFutureListener;
@@ -44,10 +44,10 @@ import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.apifest.oauth20.api.ExceptionEventHandler;
 import com.apifest.oauth20.api.LifecycleHandler;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 /**
  * Handler for requests received on the server.
@@ -177,8 +177,7 @@ public class HttpRequestHandler extends SimpleChannelUpstreamHandler {
         } else {
             AccessToken token = auth.isValidToken(tokenParam);
             if (token != null) {
-                Gson gson = new Gson();
-                String json = gson.toJson(token);
+                String json = JSON.toJSONString(token);
                 log.debug(json);
                 response = Response.createOkResponse(json);
             } else {
@@ -270,8 +269,8 @@ public class HttpRequestHandler extends SimpleChannelUpstreamHandler {
             log.debug("redirectURI: {}", redirectURI);
 
             // return auth_code
-            JsonObject obj = new JsonObject();
-            obj.addProperty("redirect_uri", redirectURI);
+            JSONObject obj = new JSONObject();
+            obj.put("redirect_uri", redirectURI);
             response = Response.createOkResponse(obj.toString());
             accessTokensLog.info("authCode {}", obj.toString());
         } catch (OAuthException ex) {
@@ -494,8 +493,7 @@ public class HttpRequestHandler extends SimpleChannelUpstreamHandler {
                 response = Response.createBadRequestResponse(Response.INVALID_CLIENT_ID);
             } else {
                 List<AccessToken> accessTokens = DBManagerFactory.getInstance().getAccessTokenByUserIdAndClientApp(userId, clientId);
-                Gson gson = new Gson();
-                String jsonString = gson.toJson(accessTokens);
+                String jsonString = JSON.toJSONString(accessTokens);
                 response = Response.createOkResponse(jsonString);
             }
         }

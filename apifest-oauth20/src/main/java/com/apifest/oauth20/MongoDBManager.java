@@ -22,15 +22,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.bson.BSONObject;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -262,13 +262,12 @@ public class MongoDBManager implements DBManager {
     public boolean storeScope(Scope scope) {
         boolean stored = false;
         String id = scope.getScope();
-        Gson gson = new Gson();
-        String json = gson.toJson(scope);
-        JsonParser parser = new JsonParser();
-        JsonObject jsonObj= parser.parse(json).getAsJsonObject();
+        String json =JSON.toJSONString(scope);
+        JSONObject jsonObj= JSON.parseObject(json);
+         
         jsonObj.remove("scope");
         // use scope name as _id
-        jsonObj.addProperty(ID_NAME, id);
+        jsonObj.put(ID_NAME, id);
 
         try {
             // use ObjectMapper in order to represent expiresIn as integer not as double - 100 instead of 100.00
@@ -336,14 +335,12 @@ public class MongoDBManager implements DBManager {
 
     // replaces id with _id, if id presents in the object
     protected String constructDbId(Object object) {
-        Gson gson = new Gson();
-        String json = gson.toJson(object);
-        JsonParser parser = new JsonParser();
-        JsonObject jsonObj= parser.parse(json).getAsJsonObject();
-        if(jsonObj.has("id")) {
-            String id = jsonObj.get("id").getAsString();
+        String json = JSON.toJSONString(object);
+        JSONObject jsonObj= JSON.parseObject(json);
+        if(jsonObj.containsKey("id")) {
+            String id = jsonObj.getString("id");
             jsonObj.remove("id");
-            jsonObj.addProperty(ID_NAME, id);
+            jsonObj.put(ID_NAME, id);
         }
         return jsonObj.toString();
     }

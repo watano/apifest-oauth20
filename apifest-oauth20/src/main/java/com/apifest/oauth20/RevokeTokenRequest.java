@@ -19,9 +19,8 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.util.CharsetUtil;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * Represents request when POST to /oauth20/tokens/revoke.
@@ -38,12 +37,11 @@ public class RevokeTokenRequest {
 
     public RevokeTokenRequest(HttpRequest request) {
         String content = request.getContent().toString(CharsetUtil.UTF_8);
-        JsonParser parser = new JsonParser();
         try {
-            JsonObject jsonObj= parser.parse(content).getAsJsonObject();
-            this.accessToken = (jsonObj.get(ACCESS_TOKEN) != null) ? jsonObj.get(ACCESS_TOKEN).getAsString() : null;
-            this.clientId = (jsonObj.get(CLIENT_ID) != null) ? jsonObj.get(CLIENT_ID).getAsString() : null;
-        } catch (JsonSyntaxException e) {
+            JSONObject jsonObj= JSON.parseObject(content);
+            this.accessToken = (jsonObj.get(ACCESS_TOKEN) != null) ? jsonObj.getString(ACCESS_TOKEN) : null;
+            this.clientId = (jsonObj.get(CLIENT_ID) != null) ? jsonObj.getString(CLIENT_ID) : null;
+        } catch (Exception e) {
             // do nothing
         }
     }
