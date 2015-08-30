@@ -20,15 +20,15 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.annotation.JSONType;
 
 /**
  * Represents an OAuth20 scope.
  *
  * @author Rossitsa Borissova
  */
-@JsonPropertyOrder({ "scope", "description", "cc_expires_in", "pass_expires_in", "refresh_expires_in" })
+@JSONType(orders = { "scope", "description", "cc_expires_in", "pass_expires_in", "refresh_expires_in" })
 public class Scope {
 
     static final String SCOPE_FIELD = "scope";
@@ -39,19 +39,19 @@ public class Scope {
 
     static final Pattern SCOPE_PATTERN = Pattern.compile("^(\\p{Alnum}+-?_?)+$");
 
-    @JsonProperty("scope")
+    @JSONField(name = "scope")
     private String scope;
 
-    @JsonProperty("description")
+    @JSONField(name = "description")
     private String description;
 
-    @JsonProperty("cc_expires_in")
+    @JSONField(name = "cc_expires_in")
     private Integer ccExpiresIn;
 
-    @JsonProperty("pass_expires_in")
+    @JSONField(name = "pass_expires_in")
     private Integer passExpiresIn;
 
-    @JsonProperty("refresh_expires_in")
+    @JSONField(name = "refresh_expires_in")
     private Integer refreshExpiresIn;
 
     public String getScope() {

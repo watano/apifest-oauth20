@@ -22,10 +22,8 @@ import java.net.URL;
 import java.util.Date;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize.Inclusion;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.annotation.JSONType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,39 +33,39 @@ import org.slf4j.LoggerFactory;
  *
  * @author Rossitsa Borissova
  */
-@JsonPropertyOrder({ "name", "description", "client_id", "client_secret", "scope", "registered", "redirect_uri", "status", "application_details" })
-@JsonSerialize(include = Inclusion.NON_EMPTY)
+@JSONType(orders = { "name", "description", "client_id", "client_secret", "scope", "registered", "redirect_uri", "status", "application_details" })
+//@JsonSerialize(include = Inclusion.NON_EMPTY)
 public class ApplicationInfo implements Serializable {
 
     protected static Logger log = LoggerFactory.getLogger(ApplicationInfo.class);
 
     private static final long serialVersionUID = 6017283924235608024L;
 
-    @JsonProperty("redirect_uri")
+    @JSONField(name = "redirect_uri")
     private String redirectUri;
 
-    @JsonProperty("registered")
+    @JSONField(name = "registered")
     private Date registered;
 
-    @JsonProperty("scope")
+    @JSONField(name = "scope")
     private String scope;
 
-    @JsonProperty("description")
+    @JSONField(name = "description")
     private String description;
 
-    @JsonProperty("name")
+    @JSONField(name = "name")
     private String name;
 
-    @JsonProperty("status")
+    @JSONField(name = "status")
     private Integer status;
 
-    @JsonProperty("client_id")
+    @JSONField(name = "client_id")
     private String id = "";
 
-    @JsonProperty("application_details")
+    @JSONField(name = "application_details")
     private Map<String, String> applicationDetails = null;
 
-    @JsonProperty("client_secret")
+    @JSONField(name = "client_secret")
     private String secret = "";
 
     public String getRegistered() {

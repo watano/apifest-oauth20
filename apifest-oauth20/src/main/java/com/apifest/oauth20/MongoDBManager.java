@@ -25,9 +25,6 @@ import org.bson.BSONObject;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -271,7 +268,7 @@ public class MongoDBManager implements DBManager {
 
         try {
             // use ObjectMapper in order to represent expiresIn as integer not as double - 100 instead of 100.00
-            Map<String, Object> result = new ObjectMapper().readValue(jsonObj.toString(), Map.class);
+            Map<String, Object> result = JSON.parseObject(jsonObj.toString(), Map.class);
 
             // if scope already exits, updates it, otherwise creates the scope
             BasicDBObject query = new BasicDBObject(ID_NAME, id);
@@ -279,11 +276,7 @@ public class MongoDBManager implements DBManager {
             DBCollection coll = db.getCollection(SCOPE_COLLECTION_NAME);
             coll.update(query, newObject, true, false);
             stored = true;
-        } catch (JsonParseException e) {
-            log.error("cannot store scope {}", scope.getScope(), e);
-        } catch (JsonMappingException e) {
-            log.error("cannot store scope {}", scope.getScope(), e);
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("cannot store scope {}", scope.getScope(), e);
         }
 
@@ -325,7 +318,7 @@ public class MongoDBManager implements DBManager {
     protected void storeObject(Object object, String collectionName) throws IOException {
         String json = constructDbId(object);
         // use ObjectMapper in order to represent expiresIn as integer not as double - 100 instead of 100.00
-        Map<String, Object> result = new ObjectMapper().readValue(json, Map.class);
+        Map<String, Object> result = JSON.parseObject(json, Map.class);
         BasicDBObject dbObject = new BasicDBObject(result);
 
         DBCollection coll = db.getCollection(collectionName);

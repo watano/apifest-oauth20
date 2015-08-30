@@ -20,11 +20,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize.Inclusion;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.annotation.JSONType;
 
 
 /**
@@ -32,48 +29,48 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize.Inclusion;
  *
  * @author Rossitsa Borissova
  */
-@JsonPropertyOrder({ "access_token", "refresh_token", "token_type", "expires_in" })
-@JsonSerialize(include = Inclusion.NON_EMPTY)
+@JSONType(orders = { "access_token", "refresh_token", "token_type", "expires_in" })
+//@JsonSerialize(include = Inclusion.NON_EMPTY)
 public class AccessToken implements Serializable {
 
     private static final long serialVersionUID = 4322523635887085378L;
 
-    @JsonProperty("access_token")
+    @JSONField(name = "access_token")
     private String token = "";
 
     // not included when client_credentials
-    @JsonProperty("refresh_token")
+    @JSONField(name = "refresh_token")
     private String refreshToken = "";
 
-    @JsonProperty("expires_in")
+    @JSONField(name = "expires_in")
     private String expiresIn = "";
 
     // bearer or mac
-    @JsonProperty("token_type")
+    @JSONField(name = "token_type")
     private String type = "";
 
-    @JsonProperty("scope")
+    @JSONField(name = "scope")
     private String scope = "";
 
-    @JsonIgnore
+    @JSONField(deserialize=false, serialize=false)
     private boolean valid;
 
-    @JsonIgnore
+    @JSONField(deserialize=false, serialize=false)
     private String clientId = "";
 
-    @JsonIgnore
+    @JSONField(deserialize=false, serialize=false)
     private String codeId = "";
 
-    @JsonIgnore
+    @JSONField(deserialize=false, serialize=false)
     private String userId = "";
 
-    @JsonIgnore
+    @JSONField(deserialize=false, serialize=false)
     private Map<String, String> details = null;
 
-    @JsonIgnore
+    @JSONField(deserialize=false, serialize=false)
     private Long created;
 
-    @JsonProperty("refresh_expires_in")
+    @JSONField(name = "refresh_expires_in")
     private String refreshExpiresIn = "";
 
     /**

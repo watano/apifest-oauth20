@@ -20,16 +20,15 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.annotation.JSONType;
 
 /**
  * Holds a client application information as it is stored in the DB.
  *
  * @author Rossitsa Borissova
  */
-@JsonPropertyOrder({ "client_id", "client_secret" })
+@JSONType(orders = { "client_id", "client_secret" })
 public class ClientCredentials implements Serializable {
 
     private static final long serialVersionUID = 6443754960051591393L;
@@ -37,37 +36,37 @@ public class ClientCredentials implements Serializable {
     public static final int ACTIVE_STATUS = 1;
     public static final int INACTIVE_STATUS = 0;
 
-    @JsonProperty("client_id")
+    @JSONField(name = "client_id")
     private String id = "";
 
-    @JsonProperty("client_secret")
+    @JSONField(name = "client_secret")
     private String secret = "";
 
     // scopes are separated by space
-    @JsonIgnore
+    @JSONField(deserialize=false, serialize=false)
     private String scope = "";
 
-    @JsonIgnore
+    @JSONField(deserialize=false, serialize=false)
     private String name = "";
 
-    @JsonIgnore
+    @JSONField(deserialize=false, serialize=false)
     private Long created;
 
-    @JsonIgnore
+    @JSONField(deserialize=false, serialize=false)
     private String uri = "";
 
-    @JsonIgnore
+    @JSONField(deserialize=false, serialize=false)
     private String descr = "";
 
     // client types - public or confidential
-    @JsonIgnore
+    @JSONField(deserialize=false, serialize=false)
     private int type;
 
     // 1 - active, 0 - not active
-    @JsonIgnore
+    @JSONField(deserialize=false, serialize=false)
     private int status;
 
-    @JsonIgnore
+    @JSONField(deserialize=false, serialize=false)
     private Map<String, String> applicationDetails = null;
 
     public ClientCredentials(String appName, String scope, String description, String uri, Map<String, String> applicationDetails) {

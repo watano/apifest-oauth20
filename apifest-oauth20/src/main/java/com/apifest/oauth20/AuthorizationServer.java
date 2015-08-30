@@ -22,9 +22,6 @@ import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
@@ -33,6 +30,7 @@ import org.jboss.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSON;
 import com.apifest.oauth20.api.AuthenticationException;
 import com.apifest.oauth20.api.ICustomGrantTypeHandler;
 import com.apifest.oauth20.api.IUserAuthentication;
@@ -58,11 +56,10 @@ public class AuthorizationServer {
         String content = req.getContent().toString(CharsetUtil.UTF_8);
         String contentType = req.headers().get(HttpHeaders.Names.CONTENT_TYPE);
 
-        if (contentType != null && contentType.contains(Response.APPLICATION_JSON)) {
-            ObjectMapper mapper = new ObjectMapper();
+        if (contentType != null && contentType.contains(Response.APPLICATION_JSON)) {            
             ApplicationInfo appInfo;
             try {
-                appInfo = mapper.readValue(content, ApplicationInfo.class);
+                appInfo = JSON.parseObject(content, ApplicationInfo.class);
                 if (appInfo.valid()) {
                     String[] scopeList = appInfo.getScope().split(" ");
                     for (String s : scopeList) {
@@ -89,11 +86,7 @@ public class AuthorizationServer {
                 } else {
                     throw new OAuthException(Response.NAME_OR_SCOPE_OR_URI_IS_NULL, HttpResponseStatus.BAD_REQUEST);
                 }
-            } catch (JsonParseException e) {
-                throw new OAuthException(e, Response.CANNOT_REGISTER_APP, HttpResponseStatus.BAD_REQUEST);
-            } catch (JsonMappingException e) {
-                throw new OAuthException(e, Response.CANNOT_REGISTER_APP, HttpResponseStatus.BAD_REQUEST);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 throw new OAuthException(e, Response.CANNOT_REGISTER_APP, HttpResponseStatus.BAD_REQUEST);
             }
         } else {
@@ -428,10 +421,9 @@ public class AuthorizationServer {
             if (!isExistingClient(clientId)) {
                 throw new OAuthException(Response.INVALID_CLIENT_ID, HttpResponseStatus.BAD_REQUEST);
             }
-            ObjectMapper mapper = new ObjectMapper();
             ApplicationInfo appInfo;
             try {
-                appInfo = mapper.readValue(content, ApplicationInfo.class);
+                appInfo = JSON.parseObject(content, ApplicationInfo.class);
                 if (appInfo.validForUpdate()) {
                     if (appInfo.getScope() != null) {
                         String[] scopeList = appInfo.getScope().split(" ");
@@ -446,11 +438,7 @@ public class AuthorizationServer {
                 } else {
                     throw new OAuthException(Response.UPDATE_APP_MANDATORY_PARAM_MISSING, HttpResponseStatus.BAD_REQUEST);
                 }
-            } catch (JsonParseException e) {
-                throw new OAuthException(e, Response.CANNOT_UPDATE_APP, HttpResponseStatus.BAD_REQUEST);
-            } catch (JsonMappingException e) {
-                throw new OAuthException(e, Response.CANNOT_UPDATE_APP, HttpResponseStatus.BAD_REQUEST);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 throw new OAuthException(e, Response.CANNOT_UPDATE_APP, HttpResponseStatus.BAD_REQUEST);
             }
         } else {

@@ -26,9 +26,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelFutureListener;
@@ -143,18 +140,11 @@ public class HttpRequestHandler extends SimpleChannelUpstreamHandler {
             String clientId = m.group(1);
             ApplicationInfo appInfo = auth.getApplicationInfo(clientId);
             if (appInfo != null) {
-                ObjectMapper mapper = new ObjectMapper();
                 try {
-                    String json = mapper.writeValueAsString(appInfo);
+                    String json = JSON.toJSONString(appInfo);
                     log.debug(json);
                     response = Response.createOkResponse(json);
-                } catch (JsonGenerationException e) {
-                    log.error("error get application info", e);
-                    invokeExceptionHandler(e, req);
-                } catch (JsonMappingException e) {
-                    log.error("error get application info", e);
-                    invokeExceptionHandler(e, req);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     log.error("error get application info", e);
                     invokeExceptionHandler(e, req);
                 }
@@ -194,8 +184,7 @@ public class HttpRequestHandler extends SimpleChannelUpstreamHandler {
             try {
                 AccessToken accessToken = auth.issueAccessToken(request);
                 if (accessToken != null) {
-                    ObjectMapper mapper = new ObjectMapper();
-                    String jsonString = mapper.writeValueAsString(accessToken);
+                    String jsonString = JSON.toJSONString(accessToken);
                     log.debug("access token:" + jsonString);
                     response = Response.createOkResponse(jsonString);
                     accessTokensLog.debug("token {}", jsonString);
@@ -203,13 +192,7 @@ public class HttpRequestHandler extends SimpleChannelUpstreamHandler {
             } catch (OAuthException ex) {
                 response = Response.createOAuthExceptionResponse(ex);
                 invokeExceptionHandler(ex, request);
-            } catch (JsonGenerationException e1) {
-                log.error("error handle token", e1);
-                invokeExceptionHandler(e1, request);
-            } catch (JsonMappingException e1) {
-                log.error("error handle token", e1);
-                invokeExceptionHandler(e1, request);
-            } catch (IOException e1) {
+            } catch (Exception e1) {
                 log.error("error handle token", e1);
                 invokeExceptionHandler(e1, request);
             }
@@ -284,20 +267,13 @@ public class HttpRequestHandler extends SimpleChannelUpstreamHandler {
         HttpResponse response = null;
         try {
             ClientCredentials creds = auth.issueClientCredentials(req);
-            ObjectMapper mapper = new ObjectMapper();
-            String jsonString = mapper.writeValueAsString(creds);
+            String jsonString = JSON.toJSONString(creds);
             log.debug("credentials:" + jsonString);
             response = Response.createOkResponse(jsonString);
         } catch (OAuthException ex) {
             response = Response.createOAuthExceptionResponse(ex);
             invokeExceptionHandler(ex, req);
-        } catch (JsonGenerationException e1) {
-            log.error("error handle register", e1);
-            invokeExceptionHandler(e1, req);
-        } catch (JsonMappingException e1) {
-            log.error("error handle register", e1);
-            invokeExceptionHandler(e1, req);
-        } catch (IOException e1) {
+        } catch (Exception e1) {
             log.error("error handle register", e1);
             invokeExceptionHandler(e1, req);
         }
@@ -429,20 +405,11 @@ public class HttpRequestHandler extends SimpleChannelUpstreamHandler {
 
     protected HttpResponse handleGetAllClientApplications(HttpRequest req) {
         List<ApplicationInfo> apps = filterClientApps(req, DBManagerFactory.getInstance().getAllApplications());
-        ObjectMapper mapper = new ObjectMapper();
         HttpResponse response = null;
         try {
-            String jsonString = mapper.writeValueAsString(apps);
+            String jsonString = JSON.toJSONString(apps);
             response = Response.createOkResponse(jsonString);
-        } catch (JsonGenerationException e) {
-            log.error("cannot list client applications", e);
-            invokeExceptionHandler(e, req);
-            response = Response.createResponse(HttpResponseStatus.BAD_REQUEST, Response.CANNOT_LIST_CLIENT_APPS);
-        } catch (JsonMappingException e) {
-            log.error("cannot list client applications", e);
-            invokeExceptionHandler(e, req);
-            response = Response.createResponse(HttpResponseStatus.BAD_REQUEST, Response.CANNOT_LIST_CLIENT_APPS);
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("cannot list client applications", e);
             invokeExceptionHandler(e, req);
             response = Response.createResponse(HttpResponseStatus.BAD_REQUEST, Response.CANNOT_LIST_CLIENT_APPS);

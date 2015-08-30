@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.fastjson.JSON;
 import org.testng.annotations.Test;
 
 /**
@@ -46,7 +46,7 @@ public class AccessTokenTest {
                 + "pmH=cq-ZGNeEzlTqxCteijq-_UBPnF=kVdsJEe=WUYWg_ptHp-VmrmelqWnfRMdolV=ibwJPMdLxkIriCEYFt#fGNzlLpgzzyT-Hoz#tkwWUGhZHuzOiruiafxOKScuaW=hYkICr\", "
                 + "\"refreshToken\" : \"197ef958a30828c2148a1f242502a9473e5de0e6e5abfb55641e972fc32850e0\", \"type\" : \"Bearer\"}";
 
-        Map<String, Object> map = new ObjectMapper().readValue(jsonStr, Map.class);
+        Map<String, Object> map = JSON.parseObject(jsonStr, Map.class);
         map.put("created", 1365351985645l);
 
         // WHEN
