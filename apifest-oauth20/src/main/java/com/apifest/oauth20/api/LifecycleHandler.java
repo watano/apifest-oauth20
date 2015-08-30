@@ -16,8 +16,8 @@
 
 package com.apifest.oauth20.api;
 
-import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.jboss.netty.handler.codec.http.HttpResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Handles request on token lifecycle.
@@ -31,5 +31,5 @@ public interface LifecycleHandler {
      * @param request incoming request
      * @param response outgoing response
      */
-    public void handle(HttpRequest request, HttpResponse response);
+    public void handle(HttpServletRequest request, HttpServletResponse response);
 }

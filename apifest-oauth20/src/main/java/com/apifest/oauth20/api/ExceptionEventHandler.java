@@ -16,7 +16,7 @@
 
 package com.apifest.oauth20.api;
 
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -31,5 +31,5 @@ public interface ExceptionEventHandler {
      *
      * @param ex exception thrown
      */
-    public void handleException(Exception ex, HttpRequest request);
+    public void handleException(Exception ex, HttpServletRequest request);
 }

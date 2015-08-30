@@ -16,14 +16,13 @@
 
 package com.apifest.oauth20;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.http.HttpHeaders;
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.apifest.oauth20.persistence.DBManager;
-import com.apifest.oauth20.persistence.DBManagerFactory;
+
+import jodd.util.Base64;
 
 /**
  * Performs authentication checks.
@@ -36,16 +35,13 @@ public class AuthChecks {
 
     protected static Logger log = LoggerFactory.getLogger(AuthChecks.class);
 
-    protected DBManager db = DBManagerFactory.getInstance();
-
-    protected String getBasicAuthenticationClientId(HttpRequest req) {
+    protected String getBasicAuthenticationClientId(DBManager db, HttpServletRequest req) {
         // extract Basic Authentication header
-        String authHeader = req.headers().get(HttpHeaders.AUTHORIZATION);
+        String authHeader = req.getHeader("Authorization");
         String clientId = null;
         if (authHeader != null && authHeader.contains(BASIC)) {
             String value = authHeader.replace(BASIC, "");
-            Base64 decoder = new Base64();
-            byte[] decodedBytes = decoder.decode(value);
+            byte[] decodedBytes = Base64.decode(value);
             String decoded = new String(decodedBytes);
             // client_id:client_secret
             String[] str = decoded.split(":");

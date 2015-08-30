@@ -21,13 +21,11 @@ package com.apifest.oauth20.persistence;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.apifest.oauth20.JSONUtils;
-import com.apifest.oauth20.OAuthServer;
 import com.apifest.oauth20.vo.AccessToken;
 import com.apifest.oauth20.vo.ApplicationInfo;
 import com.apifest.oauth20.vo.AuthCode;
@@ -42,21 +40,17 @@ public class RedisDBManager implements DBManager {
     private static final String ACCESS_TOKEN_BY_USER_ID_PREFIX_NAME = "atuid:";
     private static final String ACCESS_TOKEN_PREFIX_NAME = "at:";
 
-    private static Set<String> sentinels;
-    private static JedisSentinelPool pool;
-    private static String storeAuthCodeScript = "";
-    protected static String storeAuthCodeSHA;
+    private Set<String> sentinels;
+    private JedisSentinelPool pool;
+    private String storeAuthCodeScript = "";
+    protected String storeAuthCodeSHA;
 
-    static {
-        sentinels = new HashSet<String>();
-        String[] sentinelsList = OAuthServer.getRedisSentinels().split(",");
+    public void setupDBManager(String allSentinels, String master) {
+    	String[] sentinelsList = allSentinels.split(",");
         for (String sentinel : sentinelsList) {
             sentinels.add(sentinel);
         }
-        pool = new JedisSentinelPool(OAuthServer.getRedisMaster(), sentinels);
-    }
-
-    public void setupDBManager() {
+        pool = new JedisSentinelPool(master, sentinels);
         Jedis jedis = pool.getResource();
         storeAuthCodeSHA = jedis.scriptLoad(storeAuthCodeScript);
         jedis.close();

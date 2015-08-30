@@ -23,14 +23,13 @@ import java.util.Map;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
-import org.jboss.netty.util.CharsetUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.apifest.oauth20.AuthorizationServer;
 import com.apifest.oauth20.OAuthException;
-import com.apifest.oauth20.OAuthServer;
 import com.apifest.oauth20.Response;
+import com.apifest.oauth20.util.ServletUtils;
 
 /**
  * Represents token request.
@@ -64,8 +63,8 @@ public class TokenRequest {
 
     private String userId;
 
-    public TokenRequest(HttpRequest request) {
-        String content = request.getContent().toString(CharsetUtil.UTF_8);
+    public TokenRequest(HttpServletRequest request) {
+        String content = ServletUtils.getContent(request);
         List<NameValuePair> values = URLEncodedUtils.parse(content, Charset.forName("UTF-8"));
         Map<String, String> params = new HashMap<String, String>();
         for (NameValuePair pair : values) {
@@ -90,34 +89,33 @@ public class TokenRequest {
     public void validate() throws OAuthException {
         checkMandatoryParams();
         if (!grantType.equals(AUTHORIZATION_CODE) && !grantType.equals(REFRESH_TOKEN)
-                && !grantType.equals(CLIENT_CREDENTIALS) && !grantType.equals(PASSWORD)
-                && !grantType.equals(OAuthServer.getCustomGrantType())) {
+                && !grantType.equals(CLIENT_CREDENTIALS) && !grantType.equals(PASSWORD)) {
             throw new OAuthException(Response.GRANT_TYPE_NOT_SUPPORTED,
-                    HttpResponseStatus.BAD_REQUEST);
+                    HttpServletResponse.SC_BAD_REQUEST);
         }
         if (grantType.equals(AUTHORIZATION_CODE)) {
             if (code == null) {
                 throw new OAuthException(String.format(Response.MANDATORY_PARAM_MISSING, CODE),
-                        HttpResponseStatus.BAD_REQUEST);
+                        HttpServletResponse.SC_BAD_REQUEST);
             }
             if (redirectUri == null) {
                 throw new OAuthException(String.format(Response.MANDATORY_PARAM_MISSING,
-                        REDIRECT_URI), HttpResponseStatus.BAD_REQUEST);
+                        REDIRECT_URI), HttpServletResponse.SC_BAD_REQUEST);
             }
         }
         if (grantType.equals(REFRESH_TOKEN) && refreshToken == null) {
             throw new OAuthException(
                     String.format(Response.MANDATORY_PARAM_MISSING, REFRESH_TOKEN),
-                    HttpResponseStatus.BAD_REQUEST);
+                    HttpServletResponse.SC_BAD_REQUEST);
         }
         if (grantType.equals(PASSWORD)) {
             if (username == null) {
                 throw new OAuthException(String.format(Response.MANDATORY_PARAM_MISSING, USERNAME),
-                        HttpResponseStatus.BAD_REQUEST);
+                        HttpServletResponse.SC_BAD_REQUEST);
             }
             if (password == null) {
                 throw new OAuthException(String.format(Response.MANDATORY_PARAM_MISSING, PASSWORD),
-                        HttpResponseStatus.BAD_REQUEST);
+                        HttpServletResponse.SC_BAD_REQUEST);
             }
         }
     }
@@ -125,15 +123,15 @@ public class TokenRequest {
     public void checkMandatoryParams() throws OAuthException {
         if (clientId == null || clientId.isEmpty()) {
             throw new OAuthException(String.format(Response.MANDATORY_PARAM_MISSING, CLIENT_ID),
-                    HttpResponseStatus.BAD_REQUEST);
+                    HttpServletResponse.SC_BAD_REQUEST);
         }
         if (clientSecret == null || clientSecret.isEmpty()) {
             throw new OAuthException(String.format(Response.MANDATORY_PARAM_MISSING, CLIENT_SECRET),
-                    HttpResponseStatus.BAD_REQUEST);
+                    HttpServletResponse.SC_BAD_REQUEST);
         }
         if (grantType == null || grantType.isEmpty()) {
             throw new OAuthException(String.format(Response.MANDATORY_PARAM_MISSING, GRANT_TYPE),
-                    HttpResponseStatus.BAD_REQUEST);
+                    HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 

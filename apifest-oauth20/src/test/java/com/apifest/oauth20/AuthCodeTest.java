@@ -24,7 +24,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bson.types.ObjectId;
 import org.junit.Test;
 
 import com.apifest.oauth20.vo.AuthCode;
@@ -65,7 +64,7 @@ public class AuthCodeTest {
         map.put("redirectUri", redirecUri);
         map.put("clientId", clientId);
         map.put("valid", true);
-        map.put("_id", new ObjectId("51619e3182abb4b7b7e06d4a"));
+        map.put("_id", "51619e3182abb4b7b7e06d4a");
 
         // WHEN
         AuthCode authCode = AuthCode.loadFromMap(map);

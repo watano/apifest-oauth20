@@ -16,7 +16,7 @@
 
 package com.apifest.oauth20.api;
 
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Interface for custom grant_type handler.
@@ -30,6 +30,6 @@ public interface ICustomGrantTypeHandler {
      * @param request issue token request
      * @return user details that will be associated with the access token
      */
-    UserDetails execute(final HttpRequest request) throws AuthenticationException;
+    UserDetails execute(final HttpServletRequest request) throws AuthenticationException;
 
 }

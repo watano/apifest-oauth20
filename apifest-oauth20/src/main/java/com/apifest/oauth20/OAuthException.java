@@ -16,7 +16,6 @@
 
 package com.apifest.oauth20;
 
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,15 +31,15 @@ public class OAuthException extends Exception {
     protected static Logger log = LoggerFactory.getLogger(OAuthException.class);
 
     private String message;
-    private HttpResponseStatus httpStatus;
+    private int httpStatus;
 
-    public OAuthException(String message, HttpResponseStatus httpStatus) {
+    public OAuthException(String message, int httpStatus) {
         super();
         this.message = message;
         this.httpStatus = httpStatus;
     }
 
-    public OAuthException(Throwable e, String message, HttpResponseStatus httpStatus) {
+    public OAuthException(Throwable e, String message, int httpStatus) {
         super(e);
         this.message = message;
         this.httpStatus = httpStatus;
@@ -51,7 +50,7 @@ public class OAuthException extends Exception {
         return message;
     }
 
-    public HttpResponseStatus getHttpStatus() {
+    public int getHttpStatus() {
         return httpStatus;
     }
 

@@ -23,7 +23,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import javax.servlet.http.HttpServletRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -61,12 +61,12 @@ public class AuthRequestTest {
     @Test
     public void given_request_initialize_fields() throws Exception {
         // GIVEN
-        HttpRequest request = mock(HttpRequest.class);
+        HttpServletRequest request = mock(HttpServletRequest.class);
         String responseType = "code";
         String clientId = "763273054098803";
         String state = "xyz";
         String scope = "basic";
-        given(request.getUri()).willReturn(
+        given(request.getRequestURI()).willReturn(
                 "http://example.com/authorize?response_type=" + responseType + "&client_id="
                         + clientId + "&state=" + state
                         + "&redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom&scope=" + scope);
@@ -85,12 +85,12 @@ public class AuthRequestTest {
     @Test
     public void when_validate_and_response_type_unsupported_return_errror() throws Exception {
         // GIVEN
-        HttpRequest request = mock(HttpRequest.class);
+        HttpServletRequest request = mock(HttpServletRequest.class);
         String responseType = "unsupported";
         String clientId = "763273054098803";
         String state = "xyz";
         String scope = "basic";
-        given(request.getUri()).willReturn(
+        given(request.getRequestURI()).willReturn(
                 "http://example.com/authorize?response_type=" + responseType + "&client_id="
                         + clientId + "&state=" + state
                         + "&redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom&scope=" + scope);
@@ -112,12 +112,12 @@ public class AuthRequestTest {
     @Test
     public void when_validate_and_redirect_uri_invalid_return_errror() throws Exception {
         // GIVEN
-        HttpRequest request = mock(HttpRequest.class);
+        HttpServletRequest request = mock(HttpServletRequest.class);
         String responseType = "code";
         String clientId = "763273054098803";
         String state = "xyz";
         String scope = "basic";
-        given(request.getUri()).willReturn(
+        given(request.getRequestURI()).willReturn(
                 "http://example.com/authorize?response_type=" + responseType + "&client_id="
                         + clientId + "&state=" + state
                         + "&redirect_uri=%3A%2F%2Fclient%2Eexample%2Ecom&scope=" + scope);

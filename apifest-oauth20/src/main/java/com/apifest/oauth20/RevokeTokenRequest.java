@@ -15,12 +15,12 @@
  */
 package com.apifest.oauth20;
 
-import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
-import org.jboss.netty.util.CharsetUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.apifest.oauth20.util.ServletUtils;
 
 /**
  * Represents request when POST to /oauth20/tokens/revoke.
@@ -35,8 +35,8 @@ public class RevokeTokenRequest {
     private String accessToken;
     private String clientId;
 
-    public RevokeTokenRequest(HttpRequest request) {
-        String content = request.getContent().toString(CharsetUtil.UTF_8);
+    public RevokeTokenRequest(HttpServletRequest request) {
+        String content = ServletUtils.getContent(request);
         try {
             JSONObject jsonObj= JSON.parseObject(content);
             this.accessToken = (jsonObj.get(ACCESS_TOKEN) != null) ? jsonObj.getString(ACCESS_TOKEN) : null;
@@ -65,11 +65,11 @@ public class RevokeTokenRequest {
     protected void checkMandatoryParams() throws OAuthException {
         if (accessToken == null || accessToken.isEmpty()) {
             throw new OAuthException(String.format(Response.MANDATORY_PARAM_MISSING, ACCESS_TOKEN),
-                    HttpResponseStatus.BAD_REQUEST);
+                    HttpServletResponse.SC_BAD_REQUEST);
         }
         if (clientId == null || clientId.isEmpty()) {
             throw new OAuthException(String.format(Response.MANDATORY_PARAM_MISSING, CLIENT_ID),
-                    HttpResponseStatus.BAD_REQUEST);
+                    HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 }

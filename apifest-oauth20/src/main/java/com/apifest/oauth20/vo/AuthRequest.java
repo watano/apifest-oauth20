@@ -21,9 +21,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
-import org.jboss.netty.handler.codec.http.QueryStringDecoder;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.apifest.oauth20.OAuthException;
 import com.apifest.oauth20.Response;
@@ -52,10 +51,10 @@ public class AuthRequest {
     // additional field for identifying token-associated user
     private String userId;
 
-    public AuthRequest(HttpRequest request) {
-        if (request.getUri() != null) {
-            QueryStringDecoder dec = new QueryStringDecoder(request.getUri());
-            Map<String, List<String>> params = dec.getParameters();
+    @SuppressWarnings("unchecked")
+	public AuthRequest(HttpServletRequest request) {
+        if (request.getParameterMap() != null) {
+			Map<String, List<String>> params = request.getParameterMap();
             this.clientId = QueryParameter.getFirstElement(params, CLIENT_ID);
             this.responseType = QueryParameter.getFirstElement(params, RESPONSE_TYPE);
             this.redirectUri = QueryParameter.getFirstElement(params, REDIRECT_URI);
@@ -95,11 +94,10 @@ public class AuthRequest {
 
     public void validate() throws OAuthException {
         if (!RESPONSE_TYPE_CODE.equals(responseType)) {
-            throw new OAuthException(Response.RESPONSE_TYPE_NOT_SUPPORTED,
-                    HttpResponseStatus.BAD_REQUEST);
+            throw new OAuthException(Response.RESPONSE_TYPE_NOT_SUPPORTED, HttpServletResponse.SC_BAD_REQUEST);
         }
         if (!isValidURI(redirectUri)) {
-            throw new OAuthException(Response.INVALID_REDIRECT_URI, HttpResponseStatus.BAD_REQUEST);
+            throw new OAuthException(Response.INVALID_REDIRECT_URI, HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 

@@ -19,8 +19,6 @@ package com.apifest.oauth20.vo;
 import java.util.Date;
 import java.util.Map;
 
-import org.bson.types.ObjectId;
-
 import com.apifest.oauth20.RandomGenerator;
 
 /**
@@ -175,7 +173,7 @@ public class AuthCode {
         authCode.valid = (Boolean) map.get("valid");
         authCode.userId = (String) map.get("userId");
         authCode.created = (Long) map.get("created");
-        authCode.id = ((ObjectId) map.get("_id")).toString();
+        authCode.id = (String) map.get("_id");
         return authCode;
     }
 

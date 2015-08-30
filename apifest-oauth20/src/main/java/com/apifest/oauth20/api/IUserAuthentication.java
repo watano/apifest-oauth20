@@ -16,7 +16,7 @@
 
 package com.apifest.oauth20.api;
 
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -34,6 +34,6 @@ public interface IUserAuthentication {
      * @return details about the authenticated user
      * @throws AuthenticationException
      */
-    UserDetails authenticate(String username, String password, HttpRequest authRequest) throws AuthenticationException;
+    UserDetails authenticate(String username, String password, HttpServletRequest authRequest) throws AuthenticationException;
 
 }

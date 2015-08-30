@@ -19,19 +19,18 @@ package com.apifest.oauth20;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
-import org.jboss.netty.handler.codec.http.HttpHeaders;
-import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
-import org.jboss.netty.handler.codec.http.QueryStringDecoder;
-import org.jboss.netty.util.CharsetUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.apifest.oauth20.persistence.DBManager;
-import com.apifest.oauth20.persistence.DBManagerFactory;
+import com.apifest.oauth20.util.ServletUtils;
 import com.apifest.oauth20.vo.ApplicationInfo;
 import com.apifest.oauth20.vo.ClientCredentials;
 import com.apifest.oauth20.vo.Scope;
@@ -42,6 +41,7 @@ import com.apifest.oauth20.vo.TokenRequest;
  *
  * @author Rossitsa Borissova
  */
+@Service
 public class ScopeService {
 
     static Logger log = LoggerFactory.getLogger(ScopeService.class);
@@ -60,15 +60,24 @@ public class ScopeService {
     protected static final String SCOPE_USED_BY_APP_MESSAGE = "{\"status\":\"scope cannot be deleted, there are client apps registered with it\"}";
     private static final String SPACE = " ";
 
+    // expires_in in sec for grant type password
+    public static final int DEFAULT_PASSWORD_EXPIRES_IN = 900;
+
+    // expires_in in sec for grant type client_credentials
+    public static final int DEFAULT_CC_EXPIRES_IN = 1800;
+    
+	@Autowired
+    protected DBManager db;
+
     /**
      * Register an oauth scope. If the scope already exists, returns an error.
      *
      * @param req http request
      * @return String message that will be returned in the response
      */
-    public String registerScope(HttpRequest req) throws OAuthException {
-        String content = req.getContent().toString(CharsetUtil.UTF_8);
-        String contentType = (req.headers() != null) ? req.headers().get(HttpHeaders.Names.CONTENT_TYPE) : null;
+    public String registerScope(HttpServletRequest req) throws OAuthException {
+        String content = ServletUtils.getContent(req);
+        String contentType = req.getContentType();
         String responseMsg = "";
         // check Content-Type
         if (contentType != null && contentType.contains(Response.APPLICATION_JSON)) {
@@ -77,15 +86,15 @@ public class ScopeService {
                 if (scope.valid()) {
                     if (!Scope.validScopeName(scope.getScope())) {
                         log.error("scope name is not valid");
-                        throw new OAuthException(SCOPE_NAME_INVALID_ERROR, HttpResponseStatus.BAD_REQUEST);
+                        throw new OAuthException(SCOPE_NAME_INVALID_ERROR, HttpServletResponse.SC_BAD_REQUEST);
                     }
-                    Scope foundScope = DBManagerFactory.getInstance().findScope(scope.getScope());
+                    Scope foundScope = db.findScope(scope.getScope());
                     if (foundScope != null) {
                         log.error("scope already exists");
-                        throw new OAuthException(SCOPE_ALREADY_EXISTS, HttpResponseStatus.BAD_REQUEST);
+                        throw new OAuthException(SCOPE_ALREADY_EXISTS, HttpServletResponse.SC_BAD_REQUEST);
                     } else {
                         // store in the DB, if already exists such a scope, overwrites it
-                        boolean ok = DBManagerFactory.getInstance().storeScope(scope);
+                        boolean ok = db.storeScope(scope);
                         if (ok) {
                             responseMsg = SCOPE_STORED_OK_MESSAGE;
                         } else {
@@ -94,14 +103,14 @@ public class ScopeService {
                     }
                 } else {
                     log.error("scope is not valid");
-                    throw new OAuthException(MANDATORY_FIELDS_ERROR, HttpResponseStatus.BAD_REQUEST);
+                    throw new OAuthException(MANDATORY_FIELDS_ERROR, HttpServletResponse.SC_BAD_REQUEST);
                 }
             } catch (Exception e) {
                 log.error("cannot handle scope request", e);
-                throw new OAuthException(e, null, HttpResponseStatus.BAD_REQUEST);
+                throw new OAuthException(e, null, HttpServletResponse.SC_BAD_REQUEST);
             }
         } else {
-            throw new OAuthException(Response.UNSUPPORTED_MEDIA_TYPE, HttpResponseStatus.BAD_REQUEST);
+            throw new OAuthException(Response.UNSUPPORTED_MEDIA_TYPE, HttpServletResponse.SC_BAD_REQUEST);
         }
         return responseMsg;
     }
@@ -113,19 +122,17 @@ public class ScopeService {
      * @return string If query param client_id is passed, then the scopes for that client_id will be returned.
      * Otherwise, all available scopes will be returned in JSON format.
      */
-    public String getScopes(HttpRequest req) throws OAuthException {
-        QueryStringDecoder dec = new QueryStringDecoder(req.getUri());
-        Map<String, List<String>> queryParams = dec.getParameters();
-        if(queryParams.containsKey("client_id")) {
-            return getScopes(queryParams.get("client_id").get(0));
+    public String getScopes(HttpServletRequest req) throws OAuthException {
+        if(req.getParameter("client_id") != null) {
+            return getScopes(req.getParameter("client_id"));
         }
-        List<Scope> scopes = DBManagerFactory.getInstance().getAllScopes();
+        List<Scope> scopes = db.getAllScopes();
         String jsonString;
         try {
             jsonString = JSON.toJSONString(scopes);
         } catch (Exception e) {
             log.error("cannot load scopes", e);
-            throw new OAuthException(e, null, HttpResponseStatus.BAD_REQUEST);
+            throw new OAuthException(e, null, HttpServletResponse.SC_BAD_REQUEST);
         }
         return jsonString;
     }
@@ -138,7 +145,7 @@ public class ScopeService {
      * @return the scope if it is valid, otherwise returns null
      */
     public String getValidScope(String scope, String clientId) {
-        ClientCredentials creds = DBManagerFactory.getInstance().findClientCredentials(clientId);
+        ClientCredentials creds = db.findClientCredentials(clientId);
         if(creds == null) {
             return null;
         }
@@ -212,7 +219,7 @@ public class ScopeService {
             }
         }
         if (scopes.size() == 0 || expiresIn == Integer.MAX_VALUE) {
-            expiresIn = (ccGrantType) ? OAuthServer.DEFAULT_CC_EXPIRES_IN : OAuthServer.DEFAULT_PASSWORD_EXPIRES_IN;
+            expiresIn = (ccGrantType) ? DEFAULT_CC_EXPIRES_IN : DEFAULT_PASSWORD_EXPIRES_IN;
         }
         return expiresIn;
     }
@@ -223,22 +230,22 @@ public class ScopeService {
      * @param req http request
      * @return String message that will be returned in the response
      */
-    public String updateScope(HttpRequest req, String scopeName) throws OAuthException {
-        String content = req.getContent().toString(CharsetUtil.UTF_8);
-        String contentType = (req.headers() != null) ? req.headers().get(HttpHeaders.Names.CONTENT_TYPE) : null;
+    public String updateScope(HttpServletRequest req, String scopeName) throws OAuthException {
+        String content = ServletUtils.getContent(req);
+        String contentType = req.getContentType();
         String responseMsg = "";
         // check Content-Type
         if (contentType != null && contentType.contains(Response.APPLICATION_JSON)) {
             try {
                 Scope scope = JSON.parseObject(content, Scope.class);
                 if (scope.validForUpdate()) {
-                    Scope foundScope = DBManagerFactory.getInstance().findScope(scopeName);
+                    Scope foundScope = db.findScope(scopeName);
                     if (foundScope == null) {
                         log.error("scope does not exist");
-                        throw new OAuthException(SCOPE_NOT_EXIST, HttpResponseStatus.BAD_REQUEST);
+                        throw new OAuthException(SCOPE_NOT_EXIST, HttpServletResponse.SC_BAD_REQUEST);
                     } else {
                         setScopeEmptyValues(scope, foundScope);
-                        boolean ok = DBManagerFactory.getInstance().storeScope(scope);
+                        boolean ok = db.storeScope(scope);
                         if (ok) {
                             responseMsg = SCOPE_UPDATED_OK_MESSAGE;
                         } else {
@@ -247,14 +254,14 @@ public class ScopeService {
                     }
                 } else {
                     log.error("scope is not valid");
-                    throw new OAuthException(MANDATORY_SCOPE_ERROR, HttpResponseStatus.BAD_REQUEST);
+                    throw new OAuthException(MANDATORY_SCOPE_ERROR, HttpServletResponse.SC_BAD_REQUEST);
                 }
             } catch (Exception e) {
                 log.error("cannot handle scope request", e);
-                throw new OAuthException(e, null, HttpResponseStatus.BAD_REQUEST);
+                throw new OAuthException(e, null, HttpServletResponse.SC_BAD_REQUEST);
             }
         } else {
-            throw new OAuthException(Response.UNSUPPORTED_MEDIA_TYPE, HttpResponseStatus.BAD_REQUEST);
+            throw new OAuthException(Response.UNSUPPORTED_MEDIA_TYPE, HttpServletResponse.SC_BAD_REQUEST);
         }
         return responseMsg;
     }
@@ -267,17 +274,17 @@ public class ScopeService {
      */
     public String deleteScope(String scopeName) throws OAuthException {
         String responseMsg = "";
-        Scope foundScope = DBManagerFactory.getInstance().findScope(scopeName);
+        Scope foundScope = db.findScope(scopeName);
         if (foundScope == null) {
             log.error("scope does not exist");
-            throw new OAuthException(SCOPE_NOT_EXIST, HttpResponseStatus.BAD_REQUEST);
+            throw new OAuthException(SCOPE_NOT_EXIST, HttpServletResponse.SC_BAD_REQUEST);
         } else {
             // first, check whether there is a client app registered with that scope
             List<ApplicationInfo> registeredApps = getClientAppsByScope(scopeName);
             if (registeredApps.size() > 0) {
                 responseMsg = SCOPE_USED_BY_APP_MESSAGE;
             } else {
-                boolean ok = DBManagerFactory.getInstance().deleteScope(scopeName);
+                boolean ok = db.deleteScope(scopeName);
                 if (ok) {
                     responseMsg = SCOPE_DELETED_OK_MESSAGE;
                 } else {
@@ -290,23 +297,23 @@ public class ScopeService {
 
     public String getScopeByName(String scopeName) throws OAuthException {
         String jsonString = null;
-        Scope scope = DBManagerFactory.getInstance().findScope(scopeName);
+        Scope scope = db.findScope(scopeName);
         if (scope != null) {
             try {
                 jsonString = JSON.toJSONString(scope);
             } catch (Exception e) {
                 log.error("cannot load scopes", e);
-                throw new OAuthException(e, null, HttpResponseStatus.BAD_REQUEST);
+                throw new OAuthException(e, null, HttpServletResponse.SC_BAD_REQUEST);
             }
         } else {
-            throw new OAuthException(SCOPE_NOT_EXIST, HttpResponseStatus.NOT_FOUND);
+            throw new OAuthException(SCOPE_NOT_EXIST, HttpServletResponse.SC_NOT_FOUND);
         }
         return jsonString;
     }
 
     protected List<ApplicationInfo> getClientAppsByScope(String scopeName) {
         List<ApplicationInfo> scopeApps = new ArrayList<ApplicationInfo>();
-        List<ApplicationInfo> allApps = DBManagerFactory.getInstance().getAllApplications();
+        List<ApplicationInfo> allApps = db.getAllApplications();
         for (ApplicationInfo app : allApps) {
             if (app.getScope().contains(scopeName)) {
                 scopeApps.add(app);
@@ -336,7 +343,6 @@ public class ScopeService {
     protected List<Scope> loadScopes(String scope) {
         String [] scopes = scope.split(SPACE);
         List<Scope> loadedScopes = new ArrayList<Scope>();
-        DBManager db = DBManagerFactory.getInstance();
         for (String name : scopes) {
             loadedScopes.add(db.findScope(name));
         }
@@ -344,7 +350,7 @@ public class ScopeService {
     }
 
     protected String getScopes(String clientId) throws OAuthException {
-        ClientCredentials credentials = DBManagerFactory.getInstance().findClientCredentials(clientId);
+        ClientCredentials credentials = db.findClientCredentials(clientId);
         String jsonString;
         if(credentials != null) {
             //scopes are separated by comma
@@ -352,7 +358,7 @@ public class ScopeService {
             String [] s = scopes.split(SPACE);
             List<Scope> result = new ArrayList<Scope>();
             for(String name : s) {
-                Scope scope = DBManagerFactory.getInstance().findScope(name);
+                Scope scope = db.findScope(name);
                 result.add(scope);
             }
 
@@ -360,10 +366,10 @@ public class ScopeService {
                 jsonString = JSON.toJSONString(result);
             } catch (Exception e) {
                 log.error("cannot load scopes per clientId", e);
-                throw new OAuthException(e, null, HttpResponseStatus.BAD_REQUEST);
+                throw new OAuthException(e, null, HttpServletResponse.SC_BAD_REQUEST);
             }
         } else {
-            throw new OAuthException(null, HttpResponseStatus.NOT_FOUND);
+            throw new OAuthException(null, HttpServletResponse.SC_NOT_FOUND);
         }
         return jsonString;
     }
